@@ -7,6 +7,11 @@ pipeline {
         OUTPUT_DIR = "${WORKSPACE}\\publish"
         DEPLOYMENT_DIR = "C:\\Deployments\\${PROJECT_NAME}"
     }
+
+     // Build triggers
+    triggers {
+        pollSCM('H/5 * * * *') // Poll every 5 minutes
+    }
     
     stages {
         stage('Checkout') {
