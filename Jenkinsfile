@@ -55,13 +55,22 @@ pipeline {
         }
     }
     
-    post {
-        success {
-            echo 'BUILD SUCCESSFUL!'
-            echo "Deployed to: ${DEPLOYMENT_DIR}"
-        }
-        failure {
-            echo 'BUILD FAILED!'
-        }
+  post {
+    success {
+        echo 'BUILD SUCCESSFUL!'
+        emailext (
+            subject: "[SUCCESS] Build - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: "Build successful!\n\nView: ${env.BUILD_URL}",
+            to: "skmaurya951@gmail.com"
+        )
     }
+    failure {
+        echo 'BUILD FAILED!'
+        emailext (
+            subject: "[FAILED] Build - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: "Build failed!\n\nView: ${env.BUILD_URL}",
+            to: "skmaurya951@gmail.com"
+        )
+    }
+}
 }
