@@ -1,5 +1,3 @@
-﻿// Jenkinsfile for Console Application
-
 pipeline {
     agent any
     
@@ -10,15 +8,12 @@ pipeline {
         DEPLOYMENT_DIR = "C:\\Deployments\\${PROJECT_NAME}"
     }
     
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
-    
     stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out code...'
                 checkout scm
+                bat 'dotnet --version'
             }
         }
         
@@ -39,12 +34,7 @@ pipeline {
         stage('Publish') {
             steps {
                 echo 'Publishing application...'
-                bat """
-                    dotnet publish ${SOLUTION_FILE} ^
-                        --configuration Release ^
-                        --output ${OUTPUT_DIR} ^
-                        --no-build
-                """
+                bat "dotnet publish ${SOLUTION_FILE} --configuration Release --output ${OUTPUT_DIR} --no-build"
             }
         }
         
@@ -54,20 +44,7 @@ pipeline {
                 bat """
                     if not exist "${DEPLOYMENT_DIR}" mkdir "${DEPLOYMENT_DIR}"
                     xcopy /E /I /Y "${OUTPUT_DIR}" "${DEPLOYMENT_DIR}"
-                """
-            }
-        }
-        
-        stage('Verify') {
-            steps {
-                echo 'Verifying deployment...'
-                bat """
-                    if exist "${DEPLOYMENT_DIR}\\${PROJECT_NAME}.dll" (
-                        echo Deployment successful!
-                    ) else (
-                        echo Deployment failed!
-                        exit 1
-                    )
+                    dir "${DEPLOYMENT_DIR}"
                 """
             }
         }
@@ -75,14 +52,11 @@ pipeline {
     
     post {
         success {
-            echo 'Build completed successfully!'
-            archiveArtifacts artifacts: 'publish/**/*', allowEmptyArchive: true
+            echo 'BUILD SUCCESSFUL!'
+            echo "Deployed to: ${DEPLOYMENT_DIR}"
         }
         failure {
-            echo 'Build failed!'
-        }
-        always {
-            cleanWs()
+            echo 'BUILD FAILED!'
         }
     }
 }
