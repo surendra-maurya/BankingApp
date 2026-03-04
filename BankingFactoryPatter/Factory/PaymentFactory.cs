@@ -49,7 +49,7 @@ namespace BankingFactoryPattern.Factory
         /// </summary>
         public static void DisplayAvailablePaymentMethods()
         {
-            Console.WriteLine("\n📋 Available Payment Methods, Please Choose :");
+            Console.WriteLine("\n📋 Available Payment Methods, Please Choose Any:");
             Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
             foreach (PaymentType type in Enum.GetValues(typeof(PaymentType)))
