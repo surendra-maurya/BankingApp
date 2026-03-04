@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         PROJECT_NAME = "BankingApp"
-        SOLUTION_FILE = "BankingApp.sln"
+        SOLUTION_FILE = "BankingFactoryPattern.sln"
         OUTPUT_DIR = "${WORKSPACE}\\publish"
         DEPLOYMENT_DIR = "C:\\Deployments\\${PROJECT_NAME}"
     }
