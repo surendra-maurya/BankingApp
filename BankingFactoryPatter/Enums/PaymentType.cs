@@ -5,8 +5,6 @@
         UPI = 1,
         InternetBanking = 2,
         CreditCard = 3,
-        DebitCard = 4,
-        Wallet = 5,
-        Bitcoin = 6
+        DebitCard = 4
     }
 }
